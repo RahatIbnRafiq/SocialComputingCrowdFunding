@@ -7,7 +7,9 @@ import random
 def fund_discoveries():
     options = webdriver.ChromeOptions()
     options.headless = True
-    for category in CONSTANTS.CATEGORIES:
+    for category in CONSTANTS.CATEGORIES[1:10]:
+        print("_____________________________________________")
+        print("Collecting data for category: " + category)
         link_file = open(category+".txt", "w")
         driver = webdriver.Chrome(CONSTANTS.CHROME_DRIVER_PATH, options=options)
         driver.get(CONSTANTS.URL_ADDRESS + category)
@@ -25,11 +27,10 @@ def fund_discoveries():
                 current_total_links = len(links)
                 print("current_total_links: " + str(len(links)) + " and counter is " + str(counter))
                 if prev_total_links == current_total_links:
+                    print("All the links have been collected for category: " + category)
                     break
                 prev_total_links = current_total_links
                 counter += 1
-                if counter == 4:
-                    break
         except Exception as e:
             print("Something bad happened! " + str(e))
         finally:
@@ -40,10 +41,11 @@ def fund_discoveries():
         for link in links:
             link_file.write(link+"\n")
         link_file.close()
+        print("_____________________________________________")
 
 
 def sleep_randomly():
-    random_sleep = random.randint(2, 10)
+    random_sleep = random.randint(20, 60)
     time.sleep(random_sleep)
 
 fund_discoveries()
